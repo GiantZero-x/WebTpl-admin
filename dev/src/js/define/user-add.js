@@ -25,6 +25,7 @@ layui.use(['form', 'jquery'], function() {
     form.render('select');
   });
   form.verify({
+    //验证可以有两种方法，一种if，一种直接判断
     username: function(value) {
       if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
         return '用户名不能有特殊字符';
@@ -49,8 +50,8 @@ layui.use(['form', 'jquery'], function() {
         return "身份证号码格式不正确"
       }
     },
-    address:function(value){
-      if(value ==""){
+    address: function(value) {
+      if(value == "") {
         return "请输入正确的详细地址";
       }
     }
@@ -70,9 +71,8 @@ layui.use(['form', 'jquery'], function() {
   });
   //监听提交
   form.on('submit(useradd)', function(data) {
-    layer.alert(JSON.stringify(data.field), {
-      title: '最终的提交信息'
-    })
+    console.log(parseJson(data.field));
+    layer_close();
     return false;
   });
 })

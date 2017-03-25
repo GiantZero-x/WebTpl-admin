@@ -5,12 +5,12 @@
   float: left;
 }
 /* 头部 */
-.layui-header {
+.layui-layout-admin.fly-body .layui-header {
   background-color: #393D49;
   height: 60px !important;
   border-bottom: 5px solid #4E5465;
   .layui-nav.nav .layui-nav-item a {
-    color: #000;
+    color: #323232;
     font-size: 18px;
     margin-top: 5px;
   }
@@ -29,8 +29,6 @@
       top: 50px;
       width: 100px;
       border: 1px solid #4E5465;
-      -webkit-border-radius: 0;
-      -moz-border-radius: 0;
       border-radius: 0;
       display: none;
       background: #ffffff;
@@ -94,7 +92,7 @@
 /*登录*/
 .login-warp {
   width: 100%;
-  background: url("../../src/imgs/upload/bg.png") no-repeat;
+  background: url("../../src/imgs/common/no-pic.png") no-repeat;
   background-attachment: fixed;
   -moz-background-size: cover;
   -webkit-background-size: cover;

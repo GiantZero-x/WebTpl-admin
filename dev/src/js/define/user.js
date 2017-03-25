@@ -14,7 +14,6 @@ layui.use(['layer', 'datatable', 'datatableButton', 'datatableFlash', 'datatable
   $.fn.dataTableExt.oSort['chinese-desc'] = function(x, y) {
     return y.localeCompare(x);
   };
-
   // aTypes是插件存放表格内容类型的数组
   // reg赋值的正则表达式，用来判断是否是中文字符
   // 返回值push到aTypes数组，排序时扫描该数组，'chinese'则调用上面两个方法。返回null默认是'string'
@@ -48,10 +47,10 @@ layui.use(['layer', 'datatable', 'datatableButton', 'datatableFlash', 'datatable
         "aTargets": [0, 10] // 指定列不参与排序
       }],
       "deferRender": true, //延迟渲染
-      "ajax": "../../../json/user.json", //数据的路径
-      select: { //单击tr选中当前行
-        style: 'multi'
-      },
+      "ajax": '../../../json/user.json', //数据的路径
+      //    select: { //单击tr选中当前行
+      //      style: 'multi'
+      //    },
       "columns": [{ //定义列
         "data": function(obj) {
           return '<input type="checkbox" class="fly-checkbox" name="sublist" data-id=' + obj.id + '>';
@@ -75,11 +74,15 @@ layui.use(['layer', 'datatable', 'datatableButton', 'datatableFlash', 'datatable
         "sType": 'chinese',
         "sDefaultContent": "", //此列默认值为""，以防数据中没有此值，DataTables加载数据的时候报错  
       }, {
-        "data": "phone",
+        "data": function(obj) {
+          return "&nbsp;" + obj.phone + "&nbsp;";
+        },
         "sTitle": "手机号码", //标题
         "sDefaultContent": "", //此列默认值为""，以防数据中没有此值，DataTables加载数据的时候报错  
       }, {
-        "data": "identity",
+        "data": function(obj) {
+          return "&nbsp;" + obj.identity + "&nbsp;";
+        },
         "sTitle": "身份证号码", //标题
         "sDefaultContent": "", //此列默认值为""，以防数据中没有此值，DataTables加载数据的时候报错  
       }, {
@@ -159,7 +162,6 @@ layui.use(['layer', 'datatable', 'datatableButton', 'datatableFlash', 'datatable
         message: '此打印是使用DataTable的打印按钮生成的!'
       }]
     });
-    console.log(myTable);
     myTable.buttons().container().appendTo($('.tableTools'));
     /**
      * 显示隐藏列
@@ -184,11 +186,31 @@ layui.use(['layer', 'datatable', 'datatableButton', 'datatableFlash', 'datatable
     /**
      * 选择
      */
+    var ss = 0;
     myTable.on('select', function(e, dt, type, index) {
       if(type === 'row') {
         $(myTable.row(index).node()).find('input:checkbox').prop('checked', true);
+        ss = $(myTable.row(index).node()).find('input.fly-checkbox:checkbox').data('id'); //获取该行data-id
+        console.log(ss);
       }
     });
+    $('#ssss').on('click', function() {
+      //debugger;
+      var selectRow1 = myTable;
+      var selectRow = $($(myTable).context[0].nTBody).find('tr.selected');
+      console.log(selectRow1);
+    })
+    //外部多选获取id
+    //  $('#ssss').on('click',function(){
+    //    var list = [];
+    //    $.each($('#userTable tbody > tr'), function() {
+    //    	if($(this).hasClass('selected')){
+    //    	  var id = $(this).find('input.fly-checkbox').data('id');
+    //    	  list.push(id);
+    //    	}
+    //    });
+    //    console.log(list);
+    //  })
     /**
      * 取消选择
      */
@@ -218,8 +240,6 @@ layui.use(['layer', 'datatable', 'datatableButton', 'datatableFlash', 'datatable
     });
     $(document).on('click', '#userTable tbody td', function() {
       var row = $(this).closest('tr').get(0);
-
-      //console.log(row);
     })
   });
   //用户--查看
@@ -281,6 +301,7 @@ layui.use(['layer', 'datatable', 'datatableButton', 'datatableFlash', 'datatable
   /*用户-删除*/
   $('.table-sort').on('click', '.handle-btn-delect', function() {
     var obj = $(this);
+    var id = obj.parents('tr').find('td:first-child input').data('id');
     layer.confirm('确认要删除吗？', {
       icon: 0,
       title: '警告',
